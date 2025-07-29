@@ -210,18 +210,21 @@ public class Announcement
     }
     
     public boolean whitelist(ProxiedPlayer player) {
+        if (player == null || player.getServer() == null || player.getServer().getInfo() == null) {
+            return false; // Fixes the getServer() null thing (or at least on my system?)
+        }
+
         String serverName = player.getServer().getInfo().getName();
-        boolean inWhitelist = false;
         if (!getWhitelist().isEmpty()) {
             for (String whitelistServer : getWhitelist()) {
-                if (serverName.toLowerCase().equalsIgnoreCase(whitelistServer)) {
-                    inWhitelist = true;
+                if (serverName.equalsIgnoreCase(whitelistServer)) {
+                    return true;
                 }
             }
-        } else {
-            inWhitelist = true;
+            return false;
         }
-        return inWhitelist;
+
+        return true;
     }
     
     public boolean ignoreAnnouncement(ProxiedPlayer player) {
